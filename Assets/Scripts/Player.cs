@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     float turnSmoothVelocity;
 
     bool ableToMove = false;
+    public bool ableToListen = true;
 
     bool isRunning = false;
 
@@ -26,6 +27,14 @@ public class Player : MonoBehaviour
 
     float gravity = -9.81f;
     Vector3 velocity;
+
+    public GameManager gameManager;
+
+    public bool outOfSafezone = false;
+
+    public GameObject Tapio;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -49,7 +58,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ListenTree();
 
         if (!ableToMove)
             return;
@@ -80,25 +88,25 @@ public class Player : MonoBehaviour
         lastPos = currentPos;
     }
 
-    private void ListenTree()
+    public void ListenTree(GameObject tree)
     {
-        //Tree is in radius...
+        ableToMove = false;
+        ableToListen = false;
+        
+        StartCoroutine(StopListening());
 
+        //Look at the tree
+        transform.LookAt(tree.transform);
+        anim.SetBool("isListening", true);
 
-        //Inputs
-        //if (Input.GetKey(KeyCode.Mouse0))
-        if (Input.GetKey(KeyCode.E))
-        {
-            //Look at the tree
-            //transform.LookAt();
-            anim.SetBool("isListening", true);
-            ableToMove = false;
-        }
-        else
-        {    
-            anim.SetBool("isListening", false);
-            ableToMove = true;
-        }
+    }
+
+    IEnumerator StopListening()
+    {
+        yield return new WaitForSeconds(3.25f);
+        anim.SetBool("isListening", false);
+        ableToMove = true;
+        ableToListen = true;
     }
 
     private void Move()
@@ -126,6 +134,24 @@ public class Player : MonoBehaviour
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDir.normalized * speed * runSpeed * Time.deltaTime);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.tag == "Safezone")
+        {
+            outOfSafezone = true;
+            Tapio.gameObject.SetActive(true);
+            Tapio.GetComponent<Tapio>().ScareTheChild(transform);
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Safezone")
+        {
+            outOfSafezone = false;
+            StartCoroutine(Tapio.GetComponent<Tapio>().Hide());
         }
     }
 }

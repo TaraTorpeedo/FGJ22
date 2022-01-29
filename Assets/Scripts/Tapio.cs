@@ -5,21 +5,33 @@ using UnityEngine.AI;
 
 public class Tapio : MonoBehaviour
 {
-    public NavMeshAgent agent;
+    public Animator anim;
     Rigidbody rb;
 
     [SerializeField] GameObject Player;
-    [SerializeField] GameObject TestDest;
-    public bool DebugMode;
-    public float distanceToApproach;
 
-    Animator anim;
+    NavMeshAgent agent;
+
+    public bool isWaiting = false;
+
+    [SerializeField] GameObject TapiosNest;
+
+
+    [SerializeField] GameManager gameManager;
+
+    public Renderer body;
+    public GameObject horns;
+
+    private void Awake()
+    {
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        //agent = GetComponent<NavMeshAgent>();
-        anim = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
+
+
     }
 
     // Update is called once per frame
@@ -30,28 +42,32 @@ public class Tapio : MonoBehaviour
 
     void Move()
     {
-        if (DebugMode)
+        if (Player.GetComponent<Player>().outOfSafezone)
         {
-            agent.SetDestination(TestDest.transform.position);
+            agent.SetDestination(Player.transform.position);
             anim.SetBool("isWalking", true);
-
         }
         else
         {
-            float distance = Vector3.Distance(transform.position, Player.transform.position);
+            agent.ResetPath();
+            anim.SetBool("isWalking", false);
 
-
-            if (distance < distanceToApproach - agent.stoppingDistance)
-            {
-                agent.SetDestination(Player.transform.position);
-                anim.SetBool("isWalking", true);
-            }
-            else
-            {
-                agent.ResetPath();
-                anim.SetBool("isWalking", false);
-
-            }
         }
+    }
+
+    public IEnumerator Hide()
+    {
+        //body.material.shader = Shader.Find("Dissolve");
+        //body.material.SetFloat("_Dissolve", 3);
+        yield return new WaitForSeconds(1);
+        
+        if (!Player.GetComponent<Player>().outOfSafezone)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+    public void ScareTheChild(Transform playerTransfrom)
+    {
+        transform.position = playerTransfrom.position + playerTransfrom.forward * 30;
     }
 }
