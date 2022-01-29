@@ -60,7 +60,6 @@ public class Player : MonoBehaviour
         Move();
         Animations();
     }
-
     void Animations()
     {
         if (anim == null)
@@ -76,6 +75,7 @@ public class Player : MonoBehaviour
         else
         {
             anim.SetBool("isWalking", false);
+            anim.SetBool("isRunning", false);
         }
         lastPos = currentPos;
     }
