@@ -18,7 +18,7 @@ public class Trees : MonoBehaviour
     void Update()
     {
         float distance = Vector3.Distance(transform.position, Player.transform.position);
-        if(distance < 1f)
+        if(distance < 2f)
         {
             if (Input.GetKeyDown(KeyCode.E) && Player.GetComponent<Player>().ableToListen)
             {

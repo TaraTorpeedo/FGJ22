@@ -34,7 +34,9 @@ public class Player : MonoBehaviour
 
     public GameObject Tapio;
 
-
+    AudioSource audio;
+    [SerializeField] AudioClip walkSound;
+    [SerializeField] AudioClip RunSound;
 
     // Start is called before the first frame update
     void Start()
@@ -42,12 +44,12 @@ public class Player : MonoBehaviour
         currentPos = transform.position;
         lastPos = transform.position;
 
+        audio = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
 
-        StartCoroutine(PlayerIsStand(2.7f));
     }
 
-    IEnumerator PlayerIsStand(float gettingUpTime)
+    public IEnumerator PlayerIsStand(float gettingUpTime)
     {
         controller.enabled = false;
         yield return new WaitForSeconds(gettingUpTime);
@@ -78,14 +80,20 @@ public class Player : MonoBehaviour
         {
             anim.SetBool("isWalking", true);
             anim.SetBool("isRunning", isRunning);
-            
+
+            if(audio.clip != null && !audio.isPlaying)
+                audio.Play();
         }
         else
         {
             anim.SetBool("isWalking", false);
             anim.SetBool("isRunning", false);
+
+            if (audio.clip != null)
+                audio.Stop();
         }
         lastPos = currentPos;
+
     }
 
     public void ListenTree(GameObject tree)
@@ -112,16 +120,21 @@ public class Player : MonoBehaviour
     private void Move()
     {
         if (Input.GetKey(KeyCode.LeftShift))
-            isRunning = true;    
+        {
+            isRunning = true;
+            audio.clip = RunSound;
+        }
         else
+        {
             isRunning = false;
+            audio.clip = walkSound;
+        }
 
         if (isRunning == true)
             runSpeed = speed * 2;
         else
             runSpeed = 1;
         
-
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0, vertical);
@@ -142,7 +155,7 @@ public class Player : MonoBehaviour
         if(other.tag == "Safezone")
         {
             outOfSafezone = true;
-            Tapio.gameObject.SetActive(true);
+           // Tapio.gameObject.SetActive(true);
             Tapio.GetComponent<Tapio>().ScareTheChild(transform);
         }
     }
