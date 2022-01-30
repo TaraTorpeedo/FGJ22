@@ -163,7 +163,7 @@ public class Player : MonoBehaviour
         if(other.tag == "Safezone")
         {
             outOfSafezone = true;
-           // Tapio.gameObject.SetActive(true);
+            Tapio.gameObject.SetActive(true);
             Tapio.GetComponent<Tapio>().ScareTheChild(transform);
         }
     }

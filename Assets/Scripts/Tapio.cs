@@ -19,13 +19,10 @@ public class Tapio : MonoBehaviour
 
     [SerializeField] GameManager gameManager;
 
-    public GameObject body;
-    public GameObject horns;
-    public GameObject Poncho;
-    public GameObject Lantern;
-
     AudioSource audio;
     [SerializeField] AudioClip walkSound;
+
+    [SerializeField] ParticleSystem particleSystem;
 
 
     bool isHiding = false;
@@ -41,6 +38,7 @@ public class Tapio : MonoBehaviour
 
         audio = GetComponent<AudioSource>();
         audio.clip = walkSound;
+
     }
 
     // Update is called once per frame
@@ -71,21 +69,19 @@ public class Tapio : MonoBehaviour
 
     public void ScareTheChild(Transform playerTransfrom)
     {
-        transform.localScale = new Vector3(1,1,1);
-        body.GetComponent<shadertest>().ShowUp();
-        transform.position = playerTransfrom.position + playerTransfrom.forward * 20;
+        transform.position = playerTransfrom.position + playerTransfrom.forward * 10;
+        Instantiate(particleSystem, transform.position, transform.rotation);
+        particleSystem.Play();
 
-        Poncho.SetActive(true);
-        Lantern.SetActive(true);
     }
     public IEnumerator Hide()
     {
-        body.GetComponent<shadertest>().Hide();
 
+        Instantiate(particleSystem, transform.position, transform.rotation);
+        particleSystem.Play();
         yield return new WaitForSeconds(1f);
+        gameObject.SetActive(false);
 
-        Poncho.SetActive(false);
-        Lantern.SetActive(false);
 
     }
 
