@@ -14,11 +14,6 @@ public class Tapio : MonoBehaviour
 
     public bool isWaiting = false;
 
-    [SerializeField] GameObject TapiosNest;
-
-
-    [SerializeField] GameObject gameManager;
-
     AudioSource audio;
     [SerializeField] AudioClip walkSound;
 
@@ -41,7 +36,6 @@ public class Tapio : MonoBehaviour
         audio.clip = walkSound;
 
         Player = GameObject.Find("Tyllero").gameObject;
-        gameManager = GameObject.Find("GameManager");
 
     }
 

@@ -47,7 +47,6 @@ public class Player : MonoBehaviour
 
     bool ready = false;
 
-    public GameObject newarCoal;
 
     public GameObject Lantern;
 
