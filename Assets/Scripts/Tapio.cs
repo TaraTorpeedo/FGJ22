@@ -25,10 +25,11 @@ public class Tapio : MonoBehaviour
     [SerializeField] ParticleSystem particleSystem;
 
 
-    bool isHiding = false;
+    ParticleSystem ps = null;
 
     private void Awake()
     {
+        gameObject.SetActive(false);
     }
 
     // Start is called before the first frame update
@@ -49,6 +50,9 @@ public class Tapio : MonoBehaviour
     {
         Move();
 
+        if (ps!=null){
+            ps.transform.position = transform.position;
+        }
     }
 
     void Move()
@@ -73,19 +77,18 @@ public class Tapio : MonoBehaviour
     public void ScareTheChild(Transform playerTransfrom)
     {
         
-        transform.position = playerTransfrom.position + playerTransfrom.forward;
+        transform.position = playerTransfrom.position + playerTransfrom.forward * 20;
 
-        //Instantiate(particleSystem, transform.position, transform.rotation);
-        //particleSystem.Play();
+        ps = Instantiate(particleSystem, transform.position + transform.forward, transform.rotation);
+        ps.transform.position = transform.position;
+        ps.Play();
+
 
     }
-    public IEnumerator Hide()
+    public void Hide()
     {
-
-        //Instantiate(particleSystem, transform.position, transform.rotation);
-        //particleSystem.Play();
-
-        yield return new WaitForSeconds(1f);
+        Instantiate(particleSystem, transform.position, transform.rotation);
+        particleSystem.Play();
 
     }
 

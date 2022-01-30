@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     public Transform cam;
     float turnSmoothVelocity;
 
-    bool ableToMove = false;
+    public bool ableToMove = false;
     public bool ableToListen = true;
 
     bool isRunning = false;
@@ -184,9 +184,11 @@ public class Player : MonoBehaviour
     {
         if(other.tag == "Safezone")
         {
-            outOfSafezone = true;
-            Instantiate(newTapio, transform.position + transform.forward * 20, transform.rotation);
-            newTapio.GetComponent<Tapio>().ScareTheChild(transform);
+            Tapio.SetActive(true);
+
+           outOfSafezone = true;
+           // Instantiate(newTapio, transform.position + transform.forward * 20, transform.rotation);
+           Tapio.GetComponent<Tapio>().ScareTheChild(transform);
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -196,14 +198,23 @@ public class Player : MonoBehaviour
 
             if(ready)
             {
-                Debug.Log("asd");
-
                 outOfSafezone = false;
-                
+
+                //Tapio.SetActive(false);
+                StartCoroutine(HideTapio());
+
             }
 
 
         }
         
+    }
+
+    IEnumerator HideTapio()
+    {
+        Tapio.GetComponent<Tapio>().Hide();
+        yield return new WaitForSeconds(1f);
+        Tapio.SetActive(false);
+
     }
 }

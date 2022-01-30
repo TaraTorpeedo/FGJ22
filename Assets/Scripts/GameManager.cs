@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -9,23 +10,38 @@ public class GameManager : MonoBehaviour
     public GameObject CreditsPanel;
     public Animator playerAnimator;
     public Player player;
+    public Tapio tapio;
 
     public GameObject DeadPanel;
 
+    void Awake()
+    {
+
+        DeadPanel.SetActive(false);
+    }
+
     private void Start()
     {
+        DeadPanel.SetActive(false);
 
     }
 
     private void Update()
     {
-        float distance = Vector3.Distance(player.gameObject.transform.position, player.newTapio.gameObject.transform.position);
+        float distance = Vector3.Distance(player.gameObject.transform.position, tapio.gameObject.transform.position);
         if (distance < 1)
         {
             //Game Over
-
-
+            DeadPanel.SetActive(true);
+            player.GetComponent<Player>().ableToMove = false;
+            StartCoroutine(Dead());
         }
+    }
+
+    IEnumerator Dead()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(1);
     }
 
     public void StartGame()
@@ -38,7 +54,6 @@ public class GameManager : MonoBehaviour
         MainMenuPanel.SetActive(false);
         StartCoroutine(player.PlayerIsStand(2.7f));
 
-        DeadPanel.SetActive(true);
     }
 
     public void ShowCredits()
