@@ -98,20 +98,28 @@ public class Player : MonoBehaviour
 
     public void ListenTree(GameObject tree)
     {
-        ableToMove = false;
-        ableToListen = false;
-        
-        StartCoroutine(StopListening());
+        if (ableToMove)
+        {
 
-        //Look at the tree
-        transform.LookAt(tree.transform);
-        anim.SetBool("isListening", true);
+            ableToMove = false;
+            ableToListen = false;
+
+            StartCoroutine(StopListening());
+
+            //Look at the tree
+            var lookPos = tree.transform.position - transform.position;
+            Quaternion lookRot = Quaternion.LookRotation(lookPos);
+            lookRot.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, lookRot.eulerAngles.y, transform.rotation.eulerAngles.z);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 200);
+
+            anim.SetBool("isListening", true);
+        }
 
     }
 
     IEnumerator StopListening()
     {
-        yield return new WaitForSeconds(3.25f);
+        yield return new WaitForSeconds(3.5f);
         anim.SetBool("isListening", false);
         ableToMove = true;
         ableToListen = true;
