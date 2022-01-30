@@ -17,8 +17,9 @@ public class Trees : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float distance = Vector3.Distance(transform.position, Player.transform.position);
-        if(distance < 2f)
+        float distanceX = Mathf.Abs(transform.position.x - Player.transform.position.x);
+        float distanceZ = Mathf.Abs(transform.position.z - Player.transform.position.z);
+        if(distanceX < 1f && distanceZ < 1f)
         {
             if (Input.GetKeyDown(KeyCode.E) && Player.GetComponent<Player>().ableToListen)
             {
