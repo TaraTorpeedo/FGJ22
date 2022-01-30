@@ -46,6 +46,8 @@ public class Player : MonoBehaviour
 
     bool ready = false;
 
+    public GameObject newarCoal;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -73,7 +75,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (!ableToMove)
             return;
 
@@ -82,6 +83,14 @@ public class Player : MonoBehaviour
 
         Move();
         Animations();
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log("To goal");
+            
+            this.transform.position = newarCoal.transform.position;
+        }
+
 
         float distanceToHome = Vector3.Distance(transform.position, Home.transform.position);
         if(distanceToHome < 70)

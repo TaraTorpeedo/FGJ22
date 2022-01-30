@@ -32,7 +32,8 @@ public class GameManager : MonoBehaviour
         if (distance < 1)
         {
             //Game Over
-            DeadPanel.SetActive(true);
+            //DeadPanel.SetActive(true);
+            GameObject.Find("Timelines").GetComponent<End>().StartTimeline_GameOver();
             player.GetComponent<Player>().ableToMove = false;
             StartCoroutine(Dead());
         }
@@ -40,7 +41,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Dead()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
         SceneManager.LoadScene(1);
     }
 
