@@ -16,35 +16,17 @@ public class End : MonoBehaviour
         Credits_ = transform.Find("timelineCredits").GetComponent<PlayableDirector>();
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            StartTimelineStart();
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            StartTimelineEnd();
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            StartTimelineCredits();
-        }
-    }
-
-    public void StartTimelineStart() 
+    public void StartTimeline_Start() 
     {
         Start_.Play(); 
     }
 
-    public void StartTimelineEnd()
+    public void StartTimeline_End()
     {
         End_.Play();
     }
 
-    public void StartTimelineCredits()
+    public void StartTimeline_Credits()
     {
         Credits_.Play();
     }
