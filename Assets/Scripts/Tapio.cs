@@ -17,7 +17,7 @@ public class Tapio : MonoBehaviour
     [SerializeField] GameObject TapiosNest;
 
 
-    [SerializeField] GameManager gameManager;
+    [SerializeField] GameObject gameManager;
 
     AudioSource audio;
     [SerializeField] AudioClip walkSound;
@@ -38,6 +38,9 @@ public class Tapio : MonoBehaviour
 
         audio = GetComponent<AudioSource>();
         audio.clip = walkSound;
+
+        Player = GameObject.Find("Tyllero").gameObject;
+        gameManager = GameObject.Find("GameManager");
 
     }
 
@@ -69,19 +72,20 @@ public class Tapio : MonoBehaviour
 
     public void ScareTheChild(Transform playerTransfrom)
     {
-        transform.position = playerTransfrom.position + playerTransfrom.forward * 10;
-        Instantiate(particleSystem, transform.position, transform.rotation);
-        particleSystem.Play();
+        
+        transform.position = playerTransfrom.position + playerTransfrom.forward;
+
+        //Instantiate(particleSystem, transform.position, transform.rotation);
+        //particleSystem.Play();
 
     }
     public IEnumerator Hide()
     {
 
-        Instantiate(particleSystem, transform.position, transform.rotation);
-        particleSystem.Play();
-        yield return new WaitForSeconds(1f);
-        gameObject.SetActive(false);
+        //Instantiate(particleSystem, transform.position, transform.rotation);
+        //particleSystem.Play();
 
+        yield return new WaitForSeconds(1f);
 
     }
 

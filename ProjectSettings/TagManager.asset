@@ -8,6 +8,7 @@ TagManager:
   - SoundTree
   - SilenceTree
   - Home
+  - Enemy
   layers:
   - Default
   - TransparentFX

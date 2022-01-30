@@ -8,6 +8,11 @@ public class Trees : MonoBehaviour
 
     public AudioClip[] Sounds;
     AudioSource audio;
+
+    public GameObject panel;
+    bool showPanel = false;
+
+    GameObject theTree;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +26,13 @@ public class Trees : MonoBehaviour
         float distanceZ = Mathf.Abs(transform.position.z - Player.transform.position.z);
         if(distanceX < 1f && distanceZ < 1f)
         {
+
+            if (Player.GetComponent<Player>().ableToListen)
+                panel.SetActive(true);
+            else
+                panel.SetActive(false);
+
+
             if (Input.GetKeyDown(KeyCode.E) && Player.GetComponent<Player>().ableToListen)
             {
                 Player.GetComponent<Player>().ListenTree(gameObject);
@@ -34,7 +46,9 @@ public class Trees : MonoBehaviour
                     audio.Play();
                 }
             }
+
         }
+
     }
 
 }

@@ -38,6 +38,14 @@ public class Player : MonoBehaviour
     [SerializeField] AudioClip walkSound;
     [SerializeField] AudioClip RunSound;
 
+    [HideInInspector]
+    public GameObject newTapio;
+
+
+    public GameObject Home;
+
+    bool ready = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +55,8 @@ public class Player : MonoBehaviour
         audio = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
 
+        newTapio = Tapio;
+
     }
 
     public IEnumerator PlayerIsStand(float gettingUpTime)
@@ -55,6 +65,9 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(gettingUpTime);
         controller.enabled = true;
         ableToMove = true;
+
+        yield return new WaitForSeconds(1);
+        ready = true;
     }
 
     // Update is called once per frame
@@ -69,6 +82,13 @@ public class Player : MonoBehaviour
 
         Move();
         Animations();
+
+        float distanceToHome = Vector3.Distance(transform.position, Home.transform.position);
+        if(distanceToHome < 70)
+        {
+            //Voita
+            GameObject.Find("Timelines").GetComponent<End>().StartTimeline_End();
+        }
     }
     void Animations()
     {
@@ -111,6 +131,8 @@ public class Player : MonoBehaviour
             Quaternion lookRot = Quaternion.LookRotation(lookPos);
             lookRot.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, lookRot.eulerAngles.y, transform.rotation.eulerAngles.z);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 200);
+
+            float distance = Vector3.Distance(transform.position, tree.transform.position);
 
             anim.SetBool("isListening", true);
         }
@@ -163,16 +185,25 @@ public class Player : MonoBehaviour
         if(other.tag == "Safezone")
         {
             outOfSafezone = true;
-            Tapio.gameObject.SetActive(true);
-            Tapio.GetComponent<Tapio>().ScareTheChild(transform);
+            Instantiate(newTapio, transform.position + transform.forward * 20, transform.rotation);
+            newTapio.GetComponent<Tapio>().ScareTheChild(transform);
         }
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Safezone")
         {
-            outOfSafezone = false;
-            StartCoroutine(Tapio.GetComponent<Tapio>().Hide());
+
+            if(ready)
+            {
+                Debug.Log("asd");
+
+                outOfSafezone = false;
+                
+            }
+
+
         }
+        
     }
 }
