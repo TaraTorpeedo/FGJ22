@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,12 +13,22 @@ public class GameManager : MonoBehaviour
     public Player player;
     public Tapio tapio;
 
+    public GameObject ThirdPersonCamera;
+
     public GameObject DeadPanel;
+
+    public Button invertXToggle;
+    public TextMeshProUGUI xButtonText;
+    public Button invertYToggle;
+    public TextMeshProUGUI yButtonText;
+    bool xIsInvert = true;
+    bool yIsInvert = true;
 
     void Awake()
     {
 
         DeadPanel.SetActive(false);
+
     }
 
     private void Start()
@@ -28,6 +39,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+
         float distance = Vector3.Distance(player.gameObject.transform.position, tapio.gameObject.transform.position);
         if (distance < 1)
         {
@@ -42,7 +54,7 @@ public class GameManager : MonoBehaviour
     IEnumerator Dead()
     {
         yield return new WaitForSeconds(3f);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 
     public void StartGame()
@@ -66,5 +78,36 @@ public class GameManager : MonoBehaviour
     {
         MainMenuPanel.SetActive(true);
         CreditsPanel.SetActive(false);
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
+
+    public void InvertX()
+    {
+        Color offColor = new Color(255, 255, 255, 1);
+        Color onColor = new Color(99,99,99, 1);
+        xIsInvert = !xIsInvert;
+        //xIsInvert = ThirdPersonCamera.GetComponent<Cinemachine.CinemachineFreeLook>().m_XAxis.m_InvertInput;
+        if (xIsInvert)
+        {
+            xButtonText.color = onColor;
+        }
+        else
+        {
+            xButtonText.color = offColor;
+
+        }
+
+        Debug.Log(xIsInvert);
+
+    }
+    
+    public void InvertY()
+    {
+
     }
 }

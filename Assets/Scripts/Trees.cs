@@ -22,6 +22,12 @@ public class Trees : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (!Player.GetComponent<Player>().ableToMove)
+        {
+            panel.SetActive(false);
+        }
+
         float distanceX = Mathf.Abs(transform.position.x - Player.transform.position.x);
         float distanceZ = Mathf.Abs(transform.position.z - Player.transform.position.z);
         if(distanceX < 1f && distanceZ < 1f)
@@ -39,6 +45,10 @@ public class Trees : MonoBehaviour
 
                 if (Sounds.Length > 0)
                 {
+                    if(Sounds == null)
+                    {
+                        Debug.LogWarning(gameObject.name);
+                    }
                     int rnd = Random.Range(0, Sounds.Length);
                     AudioClip clip = Sounds[rnd];
 

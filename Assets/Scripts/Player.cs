@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -48,6 +49,8 @@ public class Player : MonoBehaviour
 
     public GameObject newarCoal;
 
+    public GameObject Lantern;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -68,6 +71,8 @@ public class Player : MonoBehaviour
         controller.enabled = true;
         ableToMove = true;
 
+        Lantern.SetActive(true);
+
         yield return new WaitForSeconds(1);
         ready = true;
     }
@@ -84,20 +89,30 @@ public class Player : MonoBehaviour
         Move();
         Animations();
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log("To goal");
-            
-            this.transform.position = newarCoal.transform.position;
-        }
-
-
         float distanceToHome = Vector3.Distance(transform.position, Home.transform.position);
         if(distanceToHome < 70)
         {
+            anim.SetBool("isWalking", false);
+            anim.SetBool("isRunning", false);
+            audio.Stop(); 
             //Voita
             GameObject.Find("Timelines").GetComponent<End>().StartTimeline_End();
+            ableToMove = false;
+
+            StartCoroutine(wait());
         }
+    }
+    IEnumerator wait()
+    {
+        yield return new WaitForSeconds(15f);
+        GameObject.Find("Timelines").GetComponent<End>().StartTimeline_Credits();
+        StartCoroutine(waitMore());
+
+    }
+    IEnumerator waitMore()
+    {
+        yield return new WaitForSeconds(60f);
+        SceneManager.LoadScene(0);
     }
     void Animations()
     {
@@ -129,7 +144,7 @@ public class Player : MonoBehaviour
     {
         if (ableToMove)
         {
-
+            audio.Stop();
             ableToMove = false;
             ableToListen = false;
 

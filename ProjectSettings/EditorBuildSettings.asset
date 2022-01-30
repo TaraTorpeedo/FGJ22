@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: d1c3109bdb54ad54c8a2b2838528e640
-  - enabled: 1
     path: Assets/ANGRY MESH/Nature Pack - Winter Environment/Scenes/RIKUU.unity
     guid: 8d6267a1a00bac34cb92959aa97ba1dc
   m_configObjects: {}
